@@ -5,12 +5,12 @@
 
 ## Dockerfile
 
+I decided to create a Docker file that is multi stage, firstly installing all dependencies and compiling all the ts files. After that, the second part only reinstalls production dependeinces and gets rid of things such as tsc, tsx and lint for smaller file size. 
 <!-- TODO: (Optional) Explain any specific goals or design decisions -->
 
 ### Forked repository
 
-<!-- TODO: If you submitted your changes to a fork, replace with your forked repository -->
-`https://github.com/your-username/academic-calendar-api`
+`https://github.com/toben1010/academic-calendar-api`
 
 ## Kubernetes
 
