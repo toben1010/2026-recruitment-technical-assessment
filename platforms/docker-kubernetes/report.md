@@ -11,4 +11,15 @@ I first read through the source code and importantly the package.json file to se
 
 ## Kubernetes
 
-<!-- TODO: Document your process for deploying Navidrome on Kubernetes -->
+First and foremost I installed minikube as per the recommendation, and then as a result also kubectl. I read the official Navidrome docs and found these important things:
+
+- It listens on port 4533 specifically
+- It stores data in /data
+- It reads music from /music
+
+Along with the docker example which told me:
+
+- The container image (deluan/navidrome) 
+- Required port mapping
+
+This took quite a while, as I also then read the documentation for kubectl and how to get it all running, along with the relevant terminology. I had to look up what all of the docker compose concepts actually do (services, image, volumes, etc) before tranlsating it to be Kubernetes compatible. I read the Kubernetes documentation here https://kubernetes.io/docs/home/ and studied what pods were, how deployment and services operated, what the equivalent of volumes were, and how environment variables transfered. I additionally read this https://docs.docker.com/guides/kube-deploy/ to help with my translation. I understand that there was a kompose convert command, however I decided to instead manually translate in order to understand how this thing operated fully, luckily again given docker has a guide on this, it didn't prove ridiculously difficult, and can be found under `navidrome.yaml` in the /navidrome directory.
