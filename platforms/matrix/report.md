@@ -43,4 +43,4 @@ SUCCESS!! I restarted the server this time with a cloudfared public url and afte
 
 ## Matrix Handle
 
-`@admin:theorem-nova-merry-acute.trycloudflare.com`
+`@admin:theorem-nova-merry-acute.trycloudflare.com` & `@tobermo:matrix.org` (depending on which ends up working, though both should)
