@@ -46,10 +46,10 @@ app.post("/parse", (req:Request, res:Response) => {
 // Takes in a recipeName and returns it in a form that 
 const parse_handwriting = (recipeName: string): string | null => {
   let result = recipeName
-    .replace(/[-_]/g, ' ')        // hyphens/underscores -> space
-    .replace(/[^a-zA-Z ]/g, '')   // remove non-letters (except spaces)
-    .replace(/\s+/g, ' ')         // collapse multiple spaces
-    .trim();                       // remove leading/trailing whitespace
+    .replace(/[-_]/g, ' ')          // hyphens/underscores
+    .replace(/[^a-zA-Z ]/g, '')     // remove non-letters
+    .replace(/\s+/g, ' ')           // collapse multiple spaces
+    .trim();                        // remove whitespace
 
   if (result.length === 0) return null;
 
