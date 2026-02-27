@@ -34,35 +34,32 @@ Write SQL (Postgres) `CREATE` statements to create the following schema. Be sure
 ```sql
 -- Users table
 CREATE TABLE users (
-    id          SERIAL PRIMARY KEY,
-    username    VARCHAR(50) NOT NULL UNIQUE,
-    email       VARCHAR(255) NOT NULL UNIQUE,
-    created_at  TIMESTAMP DEFAULT NOW()
+    id       INT PRIMARY KEY,
+    username VARCHAR(50),
+    email    VARCHAR(255)
 );
 
 -- Playlists table
 CREATE TABLE playlists (
-    id          SERIAL PRIMARY KEY,
-    user_id     INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    name        VARCHAR(100) NOT NULL,
-    created_at  TIMESTAMP DEFAULT NOW()
+    id      INT PRIMARY KEY,
+    user_id INT,
+    name    VARCHAR(100)
 );
 
 -- Songs table
 CREATE TABLE songs (
-    id          SERIAL PRIMARY KEY,
-    title       VARCHAR(255) NOT NULL,
-    artist      VARCHAR(255) NOT NULL,
-    duration    INTERVAL NOT NULL
+    id       INT PRIMARY KEY,
+    title    VARCHAR(255),
+    artist   VARCHAR(255),
+    duration VARCHAR(50)
 );
 
 -- Playlist_songs table
 CREATE TABLE playlist_songs (
-    playlist_id INT NOT NULL REFERENCES playlists(id) ON DELETE CASCADE,
-    song_id     INT NOT NULL REFERENCES songs(id) ON DELETE CASCADE,
-    PRIMARY KEY (playlist_id, song_id)  -- prevents duplicate entries
+    id          INT PRIMARY KEY,
+    playlist_id INT,
+    song_id     INT
 );
-
 ```
 
 ### b)
