@@ -26,7 +26,7 @@ const app = express();
 app.use(express.json());
 
 // Store your recipes here!
-const cookbook: any = null;
+const cookbook = new Map();
 
 // Task 1 helper (don't touch)
 app.post("/parse", (req:Request, res:Response) => {
@@ -45,16 +45,77 @@ app.post("/parse", (req:Request, res:Response) => {
 // [TASK 1] ====================================================================
 // Takes in a recipeName and returns it in a form that 
 const parse_handwriting = (recipeName: string): string | null => {
-  // TODO: implement me
-  return recipeName
+  let result = recipeName
+    .replace(/[-_]/g, ' ')        // hyphens/underscores -> space
+    .replace(/[^a-zA-Z ]/g, '')   // remove non-letters (except spaces)
+    .replace(/\s+/g, ' ')         // collapse multiple spaces
+    .trim();                       // remove leading/trailing whitespace
+
+  if (result.length === 0) return null;
+
+  result = result
+  .split(' ')
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+  .join(' ');
+  
+  return result;
 }
 
 // [TASK 2] ====================================================================
 // Endpoint that adds a CookbookEntry to your magical cookbook
-app.post("/entry", (req:Request, res:Response) => {
-  // TODO: implement me
-  res.status(500).send("not yet implemented!")
+app.post("/entry", (req: Request, res: Response) => {
+  const entry = req.body;
 
+  // Validate type
+  if (entry.type !== "recipe" && entry.type !== "ingredient") {
+    res.status(400).send("Invalid type");
+    return;
+  }
+
+  // Validate unique name
+  if (cookbook.has(entry.name)) {
+    res.status(400).send("Entry name must be unique");
+    return;
+  }
+
+  if (entry.type === "ingredient") {
+    // Validate cookTime
+    if (typeof entry.cookTime !== "number" || entry.cookTime < 0) {
+      res.status(400).send("cookTime must be >= 0");
+      return;
+    }
+
+    const newIngredient: ingredient = {
+      name: entry.name,
+      type: entry.type,
+      cookTime: entry.cookTime,
+    };
+
+    cookbook.set(entry.name, newIngredient);
+
+  } else {
+    // recipe
+    if (!Array.isArray(entry.requiredItems)) {
+      res.status(400).send("requiredItems must be an array");
+      return;
+    }
+
+    // Validate no duplicate names in requiredItems
+    const itemNames = entry.requiredItems.map((i: requiredItem) => i.name);
+    if (new Set(itemNames).size !== itemNames.length) {
+      res.status(400).send("requiredItems cannot have duplicate names");
+      return;
+    }
+
+    const newRecipe: recipe = {
+      name: entry.name,
+      type: entry.type,
+      requiredItems: entry.requiredItems,
+    };
+    cookbook.set(entry.name, newRecipe);
+  }
+
+  res.status(200).send();
 });
 
 // [TASK 3] ====================================================================
